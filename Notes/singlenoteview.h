@@ -5,7 +5,7 @@
 #include <QWidget>
 
 namespace Ui {
-    class singleNoteView;
+    class SingleNoteView;
 }
 
 class SingleNoteView : public QWidget {
@@ -20,7 +20,7 @@ public:
     int getID();
 
 private:
-    Ui::singleNoteView *ui;
+    Ui::SingleNoteView *ui;
     // To draw bottom line using css
     void paintEvent(QPaintEvent *);
 
