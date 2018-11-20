@@ -89,7 +89,7 @@
      <string>New Tag</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="puttonNewNote">
+   <widget class="QPushButton" name="buttonNewNote">
     <property name="geometry">
      <rect>
       <x>280</x>
