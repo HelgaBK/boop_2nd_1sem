@@ -33,6 +33,8 @@ private slots:
     void addTag();
     void editTag();
     void removeTag();
+    void addTagToFilter();
+    void removeTagFromFilter();
 
     // Actions for notes
     void addNote();

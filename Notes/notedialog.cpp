@@ -23,7 +23,7 @@ void NoteDialog::on_buttonAddTag_clicked() {
     bool ok;
     QString tag = QInputDialog::getItem(this, tr("Add tag : "), tr("Tag name:"), this->tags, 0, false, &ok);
     if (ok && this->note->contains(tag))
-        AdditionalClass::errorMessage("This note has a " + tag);
+        AdditionalClass::errorMessage("This note has a " + tag + " tag");
     else if (ok) {
         this->note->addTag(tag);
     }
@@ -40,7 +40,7 @@ void NoteDialog::on_buttonRemoveTag_clicked() {
     bool ok;
     QString tag = QInputDialog::getItem(this, tr("Add tag : "), tr("Tag name:"), this->tags, 0, false, &ok);
     if (ok && !this->note->contains(tag))
-        AdditionalClass::errorMessage("You can't delete " + tag);
+        AdditionalClass::errorMessage("You can't delete " + tag + " tag");
     else if (ok) {
         this->note->removeTag(tag);
         if (this->note->getTags().size() == 0)

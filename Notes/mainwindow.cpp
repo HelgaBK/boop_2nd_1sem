@@ -1,8 +1,10 @@
+#include "additionalclass.h"
 #include "mainwindow.h"
 #include "singlenoteview.h"
 #include "ui_mainwindow.h"
 
 #include <QFile>
+#include <QInputDialog>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QMenu>
@@ -15,8 +17,8 @@ MainWindow::MainWindow(QWidget *parent) :
     if (!readJSON(JSON_SAVE)) {
         this->MaxID = 0;
     }
-    // Right clicks for both lists
 
+    // Right clicks for both lists
     ui->listTags->setContextMenuPolicy(Qt::CustomContextMenu);
         connect(ui->listTags, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showTagsMenu(QPoint)));
     ui->listNotes->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -44,19 +46,19 @@ MainWindow::~MainWindow() {
 }
 
 void MainWindow::on_buttonNewNote_clicked() {
-    // TODO :: Write function
+    addNote();
 }
 
 void MainWindow::on_buttonNewTag_clicked() {
-    // TODO :: Write function
+    addTag();
 }
 
 void MainWindow::on_actionNewNote_triggered() {
-    // TODO :: Write function
+    addNote();
 }
 
 void MainWindow::on_actionNewTag_triggered() {
-    // TODO :: Write function
+    addTag();
 }
 
 void MainWindow::on_actionOpenArchive_triggered() {
@@ -66,13 +68,13 @@ void MainWindow::on_actionOpenArchive_triggered() {
 void MainWindow::showTagsMenu(const QPoint &pos) {
     QPoint globalPos = ui->listTags->mapToGlobal(pos);
     QMenu myMenu;
-    myMenu.addAction("New tag", this, SLOT(addTagItem()));
-    myMenu.addAction("Edit tag", this, SLOT(editTagItem()));
+    myMenu.addAction("New tag", this, SLOT(addTag()));
+    myMenu.addAction("Edit tag", this, SLOT(editTag()));
     if (!this->tagsFilter.contains(ui->listTags->selectedItems()[0]->text()))
         myMenu.addAction("Add to filter", this, SLOT(addTagToFilter()));
     else
         myMenu.addAction("Remove from filter", this, SLOT(removeTagFromFilter()));
-    myMenu.addAction("Delete tag",  this, SLOT(deleteTagItem()));
+    myMenu.addAction("Delete tag",  this, SLOT(removeTag()));
     myMenu.exec(globalPos);
 }
 
@@ -80,21 +82,146 @@ void MainWindow::showNotesMenu(const QPoint &pos) {
     QPoint globalPos = ui->listNotes->mapToGlobal(pos);
     QMenu myMenu;
     myMenu.addAction("Edit Note", this, SLOT(editNote()));
-    myMenu.addAction("Move to archive", this, SLOT(moveToArchive()));
-    myMenu.addAction("Delete Note",  this, SLOT(deleteNote()));
+    myMenu.addAction("Move to archive", this, SLOT(archiveNote()));
+    myMenu.addAction("Delete Note",  this, SLOT(removeNote()));
     myMenu.exec(globalPos);
 }
 
 void MainWindow::addTag() {
-    // TODO :: Write function
+    bool ok;
+    QString tag = QInputDialog::getText(this, tr("Create New Tag"), tr("Tag name:"), QLineEdit::Normal, "default", &ok);
+    tag = tag.toLower();
+    if (ok && !tag.isEmpty()) {
+        // Check for existing
+        int numberOfTags = ui->listTags->count();
+        bool hasSame = false;
+        for (int i = 0; i < numberOfTags; i++)
+            if (ui->listTags->item(i)->text() == tag)
+                hasSame = true;
+        if (!hasSame) {
+            ui->listTags->addItem(tag);
+            this->tags.push_back(tag);
+        }
+        else {
+            // If tag is already available
+            AdditionalClass::errorMessage("There is already " + tag + " tag");
+        }
+    }
 }
 
 void MainWindow::editTag() {
-    // TODO :: Write function
+    // Just accept this function
+    int tagsSize = ui->listTags->selectedItems().size();
+    for (int k = 0; k < tagsSize; ++k) {
+        if (ui->listTags->selectedItems()[k]->text() == "uncategorized"
+                || ui->listTags->selectedItems()[k]->text() == "university"
+                || ui->listTags->selectedItems()[k]->text() == "personal")
+            AdditionalClass::errorMessage("This action is prohibited!");
+        else {
+            QString tagToEdit = ui->listTags->selectedItems()[k]->text();
+            int tagSize = tags.size();
+            for (int i = 0; i < tagSize; i++)
+                if (tags[i] == tagToEdit) {
+                    bool ok;
+                    QString tag = QInputDialog::getText(this, tr("Edit Tag"), tr("Tag name:"),
+                        QLineEdit::Normal, ui->listTags->selectedItems()[k]->text(), &ok);
+                    tag = tag.toLower(); // Get unified look for tags
+
+                    if (ok && !tag.isEmpty()) {
+                        // Check for similar tag
+                        int numberOfTags = ui->listTags->count();
+                        bool hasSame = false;
+                        for (int i = 0; i < numberOfTags; i++)
+                            if (ui->listTags->item(k)->text() == tag)
+                                hasSame = true;
+                        if (!hasSame) {
+
+                            // Find selected tag
+                            int notesSize = this->notes.size();
+                            for (int i = 0; i < notesSize; i++)
+                                if (this->notes[i]->contains(tagToEdit)) {
+                                    this->notes[i]->removeTag(tagToEdit);
+                                    this->notes[i]->addTag(tag);
+                                }
+
+                            // Set new tag value
+                            for (int j = 0; j < tagSize; j++) {
+                                if (this->tags[j] == tagToEdit) {
+                                    this->tags[j] = tag;
+                                    ui->listTags->selectedItems()[k]->setText(tag);
+                                }
+                            }
+                        }
+                        else if (!ok) {
+                            // If tag is already available
+                            AdditionalClass::errorMessage("There is already " + tag + " tag");
+                        }
+                    }
+                    break;
+                }
+        }
+    }
+    updateView();
 }
 
 void MainWindow::removeTag() {
-    // TODO :: Write function
+    int tagsSize = ui->listTags->selectedItems().size();
+    for (int i = 0; i < tagsSize; ++i) {
+        if (AdditionalClass::checkIfOk("Do you want to delete this tag?", "Delete tag")) {
+            if (ui->listTags->selectedItems()[i]->text() == "uncategorized"
+                    || ui->listTags->selectedItems()[i]->text() == "work"
+                    || ui->listTags->selectedItems()[i]->text() == "personal") {
+                AdditionalClass::errorMessage("You can't remove " + ui->listTags->selectedItems()[i]->text() + " tag");
+            }
+            else {
+                QListWidgetItem *item = ui->listTags->takeItem(ui->listTags->currentRow());
+                int tagSize = this->tags.size();
+                for (int j = 0; j < tagSize; j++)
+                    if (this->tags[j] == item->text()) {
+                        this->tags.erase(tags.begin() + j);
+                        break;
+                    }
+
+                // Delete removed tag from all notes
+                int notesSize = notes.size();
+                int archiveSize = archive.size();
+                for (int j = 0; j < notesSize; j++)
+                    this->notes[j]->removeTag(item->text());
+                for (int j = 0; j < archiveSize; j++)
+                    this->archive[j]->removeTag(item->text());
+
+                delete item;
+            }
+        }
+    }
+    updateView();
+}
+
+void MainWindow::addTagToFilter() {
+    int listSize = ui->listTags->selectedItems().size();
+    for (int i = 0; i < listSize; ++i) {
+        if (!this->tagsFilter.contains(ui->listTags->selectedItems()[i]->text()))
+            this->tagsFilter.push_back(ui->listTags->selectedItems()[i]->text());
+        else {
+            AdditionalClass::errorMessage("There is already " + ui->listTags->selectedItems()[i]->text() + " tag");
+        }
+    }
+    updateView();
+}
+
+void MainWindow::removeTagFromFilter() {
+    int listSize = ui->listTags->selectedItems().size();
+    for (int i = 0; i < listSize; ++i) {
+        if (this->tagsFilter.contains(ui->listTags->selectedItems()[i]->text()))
+            for (int j = 0; j < this->tagsFilter.size(); j++)
+                if (this->tagsFilter[j] == ui->listTags->selectedItems()[i]->text()) {
+                    this->tagsFilter.erase(this->tagsFilter.begin() + j);
+                    break;
+                }
+                else continue;
+        else
+            AdditionalClass::errorMessage("There is no " + ui->listTags->selectedItems()[i]->text() + " tag");
+    }
 }
 
 void MainWindow::addNote() {
