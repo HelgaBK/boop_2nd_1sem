@@ -7,19 +7,19 @@
     <x>0</x>
     <y>0</y>
     <width>610</width>
-    <height>90</height>
+    <height>75</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
     <width>610</width>
-    <height>90</height>
+    <height>75</height>
    </size>
   </property>
   <property name="maximumSize">
    <size>
     <width>610</width>
-    <height>90</height>
+    <height>75</height>
    </size>
   </property>
   <property name="font">
@@ -37,7 +37,7 @@
      <x>10</x>
      <y>10</y>
      <width>591</width>
-     <height>51</height>
+     <height>21</height>
     </rect>
    </property>
    <property name="text">
@@ -51,13 +51,14 @@
    <property name="geometry">
     <rect>
      <x>10</x>
-     <y>70</y>
+     <y>37</y>
      <width>121</width>
      <height>16</height>
     </rect>
    </property>
    <property name="font">
     <font>
+     <pointsize>8</pointsize>
      <italic>true</italic>
     </font>
    </property>
@@ -68,19 +69,58 @@
   <widget class="QLabel" name="editedTime">
    <property name="geometry">
     <rect>
-     <x>140</x>
-     <y>70</y>
-     <width>461</width>
-     <height>16</height>
+     <x>120</x>
+     <y>36</y>
+     <width>471</width>
+     <height>20</height>
     </rect>
    </property>
    <property name="font">
     <font>
+     <pointsize>8</pointsize>
      <italic>true</italic>
     </font>
    </property>
    <property name="text">
     <string>edited time</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="editedTime_2">
+   <property name="geometry">
+    <rect>
+     <x>50</x>
+     <y>51</y>
+     <width>541</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+     <italic>true</italic>
+    </font>
+   </property>
+   <property name="text">
+    <string>tags list</string>
+   </property>
+  </widget>
+  <widget class="QLabel" name="labelEditedTime_2">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>51</y>
+     <width>41</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="font">
+    <font>
+     <pointsize>8</pointsize>
+     <italic>true</italic>
+    </font>
+   </property>
+   <property name="text">
+    <string>Tags :</string>
    </property>
   </widget>
  </widget>

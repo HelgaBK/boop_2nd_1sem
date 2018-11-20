@@ -24,7 +24,7 @@ private:
     // To draw bottom line using css
     void paintEvent(QPaintEvent *);
 
-    // Data :
+    // Displayed note
     NoteClass *note;
 };
 

@@ -116,3 +116,12 @@ bool NoteClass::removeTag(QString tag) {
 void NoteClass::clearTags() {
     this->tags.clear();
 }
+
+QString NoteClass::getTagsInString() const {
+    QString tagsString = "";
+    int tagsSize = this->tags.size();
+    for (int i = 0; i < tagsSize - 1; i++)
+        tagsString += this->tags[i] + ", ";
+    tagsString += this->tags[tagsSize - 1];
+    return tagsString;
+}
