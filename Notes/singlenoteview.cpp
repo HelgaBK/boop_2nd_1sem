@@ -21,6 +21,7 @@ void SingleNoteView::setNote(NoteClass *note) {
 
 void SingleNoteView::update() {
     // TODO :: Add parsing text
+    // TODO :: Add tags list
     ui->text->setText(note->getText());
     ui->editedTime->setText(note->getEditedTime().toString(Qt::TextDate));
 }

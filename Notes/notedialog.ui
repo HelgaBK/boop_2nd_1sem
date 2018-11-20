@@ -31,22 +31,6 @@
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <widget class="QLabel" name="text">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>581</width>
-     <height>191</height>
-    </rect>
-   </property>
-   <property name="text">
-    <string>Text</string>
-   </property>
-   <property name="alignment">
-    <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
-   </property>
-  </widget>
   <widget class="QLabel" name="labelEditedTime">
    <property name="geometry">
     <rect>
@@ -181,6 +165,16 @@
    </property>
    <property name="text">
     <string>Delete Note</string>
+   </property>
+  </widget>
+  <widget class="QTextEdit" name="text">
+   <property name="geometry">
+    <rect>
+     <x>10</x>
+     <y>10</y>
+     <width>581</width>
+     <height>191</height>
+    </rect>
    </property>
   </widget>
  </widget>
