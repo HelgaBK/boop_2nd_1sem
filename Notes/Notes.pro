@@ -30,19 +30,22 @@ SOURCES += \
     noteclass.cpp \
     singlenoteview.cpp \
     notedialog.cpp \
-    additionalclass.cpp
+    additionalclass.cpp \
+    archivedialog.cpp
 
 HEADERS += \
         mainwindow.h \
     noteclass.h \
     singlenoteview.h \
     notedialog.h \
-    additionalclass.h
+    additionalclass.h \
+    archivedialog.h
 
 FORMS += \
         mainwindow.ui \
     singlenoteview.ui \
-    notedialog.ui
+    notedialog.ui \
+    archivedialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
