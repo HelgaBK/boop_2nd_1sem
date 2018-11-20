@@ -25,7 +25,114 @@
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
-  <widget class="QWidget" name="centralWidget"/>
+  <widget class="QWidget" name="centralWidget">
+   <widget class="QListWidget" name="listTags">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>50</y>
+      <width>261</width>
+      <height>451</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QListWidget" name="listNotes">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>50</y>
+      <width>601</width>
+      <height>451</height>
+     </rect>
+    </property>
+    <property name="sizePolicy">
+     <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+      <horstretch>0</horstretch>
+      <verstretch>0</verstretch>
+     </sizepolicy>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="buttonNewTag">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>510</y>
+      <width>261</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Calibri</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>New Tag</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="puttonNewNote">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>510</y>
+      <width>601</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Calibri</family>
+      <pointsize>12</pointsize>
+     </font>
+    </property>
+    <property name="text">
+     <string>New Note</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labeltags">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>10</y>
+      <width>251</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Calibri</family>
+      <pointsize>16</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Tags</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelNotes">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>10</y>
+      <width>251</width>
+      <height>31</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <family>Calibri</family>
+      <pointsize>16</pointsize>
+      <weight>75</weight>
+      <bold>true</bold>
+     </font>
+    </property>
+    <property name="text">
+     <string>Notes</string>
+    </property>
+   </widget>
+  </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <widget class="QToolBar" name="mainToolBar">
    <property name="movable">
@@ -40,11 +147,11 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
-   <addaction name="actionNew_Note"/>
-   <addaction name="actionNew_Tag"/>
-   <addaction name="actionOpen_Archive"/>
+   <addaction name="actionNewNote"/>
+   <addaction name="actionNewTag"/>
+   <addaction name="actionOpenArchive"/>
   </widget>
-  <action name="actionNew_Note">
+  <action name="actionNewNote">
    <property name="text">
     <string>New Note</string>
    </property>
@@ -52,7 +159,7 @@
     <string>Ctrl+N</string>
    </property>
   </action>
-  <action name="actionNew_Tag">
+  <action name="actionNewTag">
    <property name="text">
     <string>New Tag</string>
    </property>
@@ -60,7 +167,7 @@
     <string>Ctrl+T</string>
    </property>
   </action>
-  <action name="actionOpen_Archive">
+  <action name="actionOpenArchive">
    <property name="text">
     <string>Open Archive</string>
    </property>
