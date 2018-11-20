@@ -28,11 +28,11 @@ void NoteClass::readJSON(const QJsonObject &json) {
     if (json.contains("id") && json["id"].isDouble())
         this->ID = json["id"].toInt();
 
-    if (json.contains("time") && json["creation_time"].isString())
-        this->editedTime = QDateTime().fromString(json["creation_time"].toString(), Qt::TextDate);
+    if (json.contains("time") && json["time"].isString())
+        this->editedTime = QDateTime().fromString(json["time"].toString(), Qt::TextDate);
 
-    if (json.contains("text") && json["note_text"].isString())
-        this->text = json["note_text"].toString();
+    if (json.contains("text") && json["text"].isString())
+        this->text = json["text"].toString();
 
     if (json.contains("tags") && json["tags"].isArray()) {
         QJsonArray tagsArray = json["tags"].toArray();

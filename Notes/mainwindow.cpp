@@ -496,7 +496,7 @@ bool MainWindow::writeJSON(QString file) {
     int tagArraySize = this->tags.size();
     for (int i = 0; i < tagArraySize; i++) {
         // Add only user-defined notes
-        if (this->tags[i] != "university" && this->tags[i] != "university" && this->tags[i] != "uncategorized")
+        if (this->tags[i] != "uncategorized" && this->tags[i] != "university" && this->tags[i] != "personal")
             tagArray.push_back(this->tags[i]);
     }
 

@@ -22,6 +22,7 @@ ArchiveDialog::~ArchiveDialog() {
 
 void ArchiveDialog::setNotes(QVector<NoteClass *> notes) {
     this->notes = notes;
+    update();
 }
 
 QVector<int> ArchiveDialog::getToUnarchive() {

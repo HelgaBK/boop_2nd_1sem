@@ -17,6 +17,7 @@ NoteDialog::~NoteDialog() {
 void NoteDialog::initDialog(NoteClass *note, QStringList tags) {
     this->note = note;
     this->tags = tags;
+    update();
 }
 
 NoteClass *NoteDialog::getNewNote() {
@@ -80,4 +81,7 @@ void NoteDialog::update() {
         tagsString += currentTags[currentTagsSize - 1];
         ui->tags->setText(tagsString);
     }
+    if (ui->text->toPlainText() == "")
+            ui->text->setText(this->note->getText());
+    ui->editedTime->setText(this->note->getEditedTime().toString(Qt::TextDate));
 }
