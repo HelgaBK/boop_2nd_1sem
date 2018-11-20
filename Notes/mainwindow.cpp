@@ -1,5 +1,7 @@
 #include "additionalclass.h"
+#include "archivedialog.h"
 #include "mainwindow.h"
+#include "notedialog.h"
 #include "singlenoteview.h"
 #include "ui_mainwindow.h"
 
@@ -62,7 +64,31 @@ void MainWindow::on_actionNewTag_triggered() {
 }
 
 void MainWindow::on_actionOpenArchive_triggered() {
-    // TODO :: Write function
+    ArchiveDialog *archiveDialog = new ArchiveDialog();
+    archiveDialog->setNotes(this->archive);
+    archiveDialog->exec();
+
+    QVector<int> deletedNotes = archiveDialog->getToDelete();
+    QVector<int> unarchivedNotes = archiveDialog->getToUnarchive();
+
+    if (deletedNotes.size() > 0)
+        for (int j = 0; j < deletedNotes.size(); j++)
+            for (int i = 0; i < archive.size(); i++) {
+                if (this->archive[i]->getID() == deletedNotes[j]) {
+                    archive.erase(archive.begin() + i);
+                    break;
+                }
+            }
+    if (unarchivedNotes.size() > 0)
+        for (int j = 0; j < unarchivedNotes.size(); j++)
+            for (int i = 0; i < archive.size(); i++) {
+                if (this->archive[i]->getID() == unarchivedNotes[j]) {
+                    notes.push_back(archive[i]);
+                    archive.erase(archive.begin() + i);
+                    break;
+                }
+            }
+    updateView();
 }
 
 void MainWindow::showTagsMenu(const QPoint &pos) {
@@ -225,19 +251,121 @@ void MainWindow::removeTagFromFilter() {
 }
 
 void MainWindow::addNote() {
-    // TODO :: Write function
+    QDateTime currentTime = QDateTime::currentDateTime();
+    QString text = "";
+    QStringList noteTags;
+    int ID = this->MaxID + 1;
+    this->MaxID++;
+    NoteClass *noteClass = new NoteClass(ID, text, currentTime);
+    NoteDialog *noteDialog = new NoteDialog(this);
+    noteDialog->initDialog(noteClass, this->tags);
+    noteDialog->exec();
+    if (noteClass->getText() == "") { }
+    else this->notes.push_back(noteClass);
+    updateView();
 }
 
 void MainWindow::editNote() {
-    // TODO :: Write function
+    int notesSize = ui->listNotes->selectedItems().size();
+    for (int z = 0; z < notesSize; z++) {
+
+        int editID = -1;
+        int listWidgetSize = ui->listNotes->count();
+        for (int i = 0; i < listWidgetSize; i++)
+            if (ui->listNotes->item(i) == ui->listNotes->selectedItems()[z]) {
+                editID = (qobject_cast<SingleNoteView*>(ui->listNotes->itemWidget(
+                    ui->listNotes->item(ui->listNotes->currentRow()))))->getID();
+            }
+        if (editID == -1)
+            AdditionalClass::errorMessage("That wasn't suppose to happen");
+
+        int notesSize = notes.size();
+        NoteClass *noteToEdit = new NoteClass();
+
+        for (int i = 0; i < notesSize; i++)
+            if (notes[i]->getID() == editID) {
+                noteToEdit = notes[i];
+                break;
+            }
+        QDateTime editedTime = noteToEdit->getEditedTime();
+        QString text = noteToEdit->getText();
+        QStringList noteTags = noteToEdit->getTags();
+        int ID = noteToEdit->getID();
+
+        NoteClass *noteClass = new NoteClass(ID, text, editedTime, noteTags);
+        NoteDialog *noteDialog = new NoteDialog(this);
+        noteDialog->initDialog(noteClass, this->tags);
+        noteDialog->exec();
+        noteClass = noteDialog->getNewNote();
+        if (noteClass->getText() == "") {
+            int notesSize = notes.size();
+            for (int i = 0; i < notesSize; i++)
+                if (this->notes[i]->getID() == noteClass->getID()) {
+                    // Remove item
+                    this->notes.erase(this->notes.begin() + i);
+                    break;
+                }
+        }
+        else {
+            noteToEdit->clearTags();
+            noteToEdit->setText(noteClass->getText());
+            QStringList tagsListNote = noteClass->getTags();
+            for (int i = 0; i < tagsListNote.size(); i++)
+                if (!noteToEdit->contains(tagsListNote[i]))
+                    noteToEdit->addTag(tagsListNote[i]);
+            noteToEdit->setEditedTime(noteClass->getEditedTime());
+        }
+    }
+    updateView();
 }
 
 void MainWindow::removeNote() {
-    // TODO :: Write function
+    int listSize = ui->listNotes->selectedItems().size();
+    for (int z = 0; z < listSize; z++) {
+        if (AdditionalClass::checkIfOk("Do you want to delete this note?", "Delete note")) {
+            int foundID = -1;
+            int listWidgetSize = ui->listNotes->count();
+            for (int i = 0; i < listWidgetSize; i++)
+                if (ui->listNotes->item(i) == ui->listNotes->selectedItems()[z]) {
+                    foundID = (qobject_cast<SingleNoteView*>(ui->listNotes->itemWidget(
+                        ui->listNotes->item(ui->listNotes->currentRow()))))->getID();
+                }
+
+            int notesSize = notes.size();
+            for (int i = 0; i < notesSize; i++)
+                if (notes[i]->getID() == foundID) {
+                    notes.erase(notes.begin() + i);
+                    break;
+                }
+            updateView();
+        }
+    }
 }
 
 void MainWindow::archiveNote() {
-    // TODO :: Write function
+    int listSize = ui->listNotes->selectedItems().size();
+    for (int z = 0; z < listSize; z++) {
+        if (AdditionalClass::checkIfOk("Do you want to move note to archive?", "Move to archive")) {
+            int foundID = -1;
+            int listWidgetSize = ui->listNotes->count();
+            for (int i = 0; i < listWidgetSize; i++)
+                if (ui->listNotes->item(i) == ui->listNotes->selectedItems()[z]) {
+                    // Confusing row
+                    foundID = (qobject_cast<SingleNoteView*>(ui->listNotes->itemWidget(
+                        ui->listNotes->item(ui->listNotes->currentRow()))))->getID();
+                }
+
+            int notesSize = notes.size();
+
+            for (int i = 0; i < notesSize; i++)
+                if (notes[i]->getID() == foundID) {
+                    archive.push_back(notes[i]);
+                    notes.erase(notes.begin() + i);
+                    break;
+                }
+            updateView();
+        }
+    }
 }
 
 void MainWindow::updateView() {

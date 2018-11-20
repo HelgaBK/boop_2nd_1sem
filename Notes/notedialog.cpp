@@ -19,6 +19,16 @@ void NoteDialog::initDialog(NoteClass *note, QStringList tags) {
     this->tags = tags;
 }
 
+NoteClass *NoteDialog::getNewNote() {
+    int ID = this->note->getID();
+    QDateTime editedTime = QDateTime::currentDateTime();
+    QString text = ui->text->toPlainText();
+    QStringList tagsList = this->note->getTags();
+
+    NoteClass *newNote = new NoteClass(ID, text, editedTime, tagsList);
+    return newNote;
+}
+
 void NoteDialog::on_buttonAddTag_clicked() {
     bool ok;
     QString tag = QInputDialog::getItem(this, tr("Add tag : "), tr("Tag name:"), this->tags, 0, false, &ok);

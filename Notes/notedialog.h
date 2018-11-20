@@ -18,6 +18,9 @@ public:
     // Use it to initialize Dialog
     void initDialog(NoteClass *note, QStringList tags);
 
+    // Return new [edired] note
+    NoteClass* getNewNote();
+
 private slots:
     void on_buttonAddTag_clicked();
     void on_buttonDeleteNote_clicked();
