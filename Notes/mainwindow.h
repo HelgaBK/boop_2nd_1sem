@@ -45,8 +45,11 @@ private:
     void updateList();
 
     // Methods to work with JSON
-    void readJSON(QString file);
-    void writeJSON(QString file);
+    bool readJSON(QString file);
+    bool writeJSON(QString file);
+
+    // Name of JSON save file
+    QString JSON_SAVE = "data.json";
 };
 
 #endif // MAINWINDOW_H
