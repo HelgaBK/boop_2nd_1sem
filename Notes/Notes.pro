@@ -28,16 +28,19 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     noteclass.cpp \
-    singlenoteview.cpp
+    singlenoteview.cpp \
+    notedialog.cpp
 
 HEADERS += \
         mainwindow.h \
     noteclass.h \
-    singlenoteview.h
+    singlenoteview.h \
+    notedialog.h
 
 FORMS += \
         mainwindow.ui \
-    singlenoteview.ui
+    singlenoteview.ui \
+    notedialog.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
