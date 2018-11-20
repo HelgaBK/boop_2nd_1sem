@@ -32,6 +32,9 @@ private:
     // Stored values
     QVector<NoteClass*> notes;
     QVector<NoteClass*> archive;
+    QStringList tags;
+    QStringList tagsFilter;
+    int MaxID;
 
     // Other methods
     void addNote();

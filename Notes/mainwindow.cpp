@@ -32,3 +32,11 @@ void MainWindow::on_actionNewTag_triggered() {
 void MainWindow::on_actionOpenArchive_triggered() {
 
 }
+
+void MainWindow::addNote() {
+
+}
+
+void MainWindow::addTag() {
+
+}
