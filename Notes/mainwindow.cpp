@@ -1,4 +1,5 @@
 #include "mainwindow.h"
+#include "singlenoteview.h"
 #include "ui_mainwindow.h"
 
 #include <QFile>
@@ -89,11 +90,11 @@ void MainWindow::addTag() {
 }
 
 void MainWindow::editTag() {
-
+    // TODO :: Write function
 }
 
 void MainWindow::removeTag() {
-
+    // TODO :: Write function
 }
 
 void MainWindow::addNote() {
@@ -101,23 +102,63 @@ void MainWindow::addNote() {
 }
 
 void MainWindow::editNote() {
-
+    // TODO :: Write function
 }
 
 void MainWindow::removeNote() {
-
+    // TODO :: Write function
 }
 
 void MainWindow::archiveNote() {
-
+    // TODO :: Write function
 }
 
 void MainWindow::updateView() {
-    // TODO :: Write function
+    updateList();
+    QString labelText = "";
+    if (this->tagsFilter.size() != 0) {
+        labelText += "Notes [";
+        for (int i = 0; i < tagsFilter.size(); i++) {
+            labelText += " " + tagsFilter[i];
+        }
+        labelText += " ]";
+    }
+    else
+        labelText = "Notes";
+    ui->labelNotes->setText(labelText);
 }
 
 void MainWindow::updateList() {
-    // TODO :: Write function
+    int notesSize = this->notes.size();
+    int filterSize = this->tagsFilter.size();
+    QVector<NoteClass*> selectedNotes;
+    if (tagsFilter.size() == 0) {
+        selectedNotes = this->notes;
+    }
+    else {
+        // If the tags filter has some selected tags
+        bool hasAllTags;
+        for (int i = 0; i < notesSize; i++) {
+            hasAllTags = true;
+            for (int j = 0; j < filterSize; j++)
+                if (!this->notes[i]->contains(tagsFilter[j]))
+                    hasAllTags = false;
+            if (hasAllTags)
+                selectedNotes.push_back(notes[i]);
+        }
+    }
+
+    int noteListSize = selectedNotes.size();
+    ui->listNotes->clear();
+    for (int i = 0; i < noteListSize; i++) {
+        QListWidgetItem *listWidgetItem = new QListWidgetItem(ui->listNotes);
+        ui->listNotes->addItem(listWidgetItem);
+        SingleNoteView *singleNoteView = new SingleNoteView;
+        singleNoteView->setStyleSheet("singleNoteView {border-bottom: 1px solid #BDBDBD}");
+        singleNoteView->setNote(this->notes[i]);
+        listWidgetItem->setSizeHint(QSize(singleNoteView->sizeHint().width(), 85));
+        ui->listNotes->setItemWidget(listWidgetItem, singleNoteView);
+    }
 }
 
 bool MainWindow::readJSON(QString file) {
