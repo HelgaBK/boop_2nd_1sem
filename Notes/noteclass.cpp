@@ -81,7 +81,7 @@ QStringList NoteClass::getTags() const {
     return this->tags;
 }
 
-bool NoteClass::checkForTag(QString tag) const {
+bool NoteClass::contains(QString tag) const {
     return this->tags.contains(tag);
 }
 

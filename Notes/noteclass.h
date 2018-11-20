@@ -28,7 +28,7 @@ public:
 
     void setTags(QStringList tags);
     QStringList getTags() const;
-    bool checkForTag(QString tag) const;
+    bool contains(QString tag) const;
     bool addTag(QString tag);
     bool removeTag(QString tag);
     void clearTags();

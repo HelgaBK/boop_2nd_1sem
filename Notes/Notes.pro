@@ -29,13 +29,15 @@ SOURCES += \
         mainwindow.cpp \
     noteclass.cpp \
     singlenoteview.cpp \
-    notedialog.cpp
+    notedialog.cpp \
+    additionalclass.cpp
 
 HEADERS += \
         mainwindow.h \
     noteclass.h \
     singlenoteview.h \
-    notedialog.h
+    notedialog.h \
+    additionalclass.h
 
 FORMS += \
         mainwindow.ui \
