@@ -195,7 +195,7 @@ void MainWindow::removeTag() {
     for (int i = 0; i < tagsSize; ++i) {
         if (AdditionalClass::checkIfOk("Do you want to delete this tag?", "Delete tag")) {
             if (ui->listTags->selectedItems()[i]->text() == "uncategorized"
-                    || ui->listTags->selectedItems()[i]->text() == "work"
+                    || ui->listTags->selectedItems()[i]->text() == "university"
                     || ui->listTags->selectedItems()[i]->text() == "personal") {
                 AdditionalClass::errorMessage("You can't remove " + ui->listTags->selectedItems()[i]->text() + " tag");
             }
@@ -496,7 +496,7 @@ bool MainWindow::writeJSON(QString file) {
     int tagArraySize = this->tags.size();
     for (int i = 0; i < tagArraySize; i++) {
         // Add only user-defined notes
-        if (this->tags[i] != "work" && this->tags[i] != "university" && this->tags[i] != "uncategorized")
+        if (this->tags[i] != "university" && this->tags[i] != "university" && this->tags[i] != "uncategorized")
             tagArray.push_back(this->tags[i]);
     }
 

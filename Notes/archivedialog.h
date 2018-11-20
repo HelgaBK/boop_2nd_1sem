@@ -22,7 +22,10 @@ public:
     QVector<int> getToDelete();
 
 public slots:
-    // TODO :: Add right-click actions
+    // Right-click actions
+    void showListMenu(const QPoint &pos);
+    void removeNote();
+    void unarchiveNote();
 
 private:
     Ui::ArchiveDialog *ui;
@@ -34,6 +37,9 @@ private:
 
     // Interface methods
     void update();
+
+    // Additional method
+    int findNoteID(int number);
 };
 
 #endif // ARCHIVEDIALOG_H
