@@ -33,7 +33,7 @@ QVector<int> ArchiveDialog::getToDelete() {
     return this->toDelete;
 }
 
-void ArchiveDialog::showListMenu(const QPoint &pos) {
+void ArchiveDialog::showNotesMenu(const QPoint &pos) {
     QPoint globalPos = ui->listNotes->mapToGlobal(pos);
     QMenu myMenu;
     myMenu.addAction("Move from archive", this, SLOT(unarchiveNote()));

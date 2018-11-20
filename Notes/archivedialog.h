@@ -23,7 +23,7 @@ public:
 
 public slots:
     // Right-click actions
-    void showListMenu(const QPoint &pos);
+    void showNotesMenu(const QPoint &pos);
     void removeNote();
     void unarchiveNote();
 
