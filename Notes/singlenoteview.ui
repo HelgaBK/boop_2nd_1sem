@@ -85,7 +85,7 @@
     <string>edited time</string>
    </property>
   </widget>
-  <widget class="QLabel" name="editedTime_2">
+  <widget class="QLabel" name="tags">
    <property name="geometry">
     <rect>
      <x>50</x>
@@ -104,7 +104,7 @@
     <string>tags list</string>
    </property>
   </widget>
-  <widget class="QLabel" name="labelEditedTime_2">
+  <widget class="QLabel" name="labelTags">
    <property name="geometry">
     <rect>
      <x>10</x>

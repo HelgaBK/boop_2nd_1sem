@@ -20,10 +20,19 @@ void SingleNoteView::setNote(NoteClass *note) {
 }
 
 void SingleNoteView::update() {
-    // TODO :: Add parsing text
-    // TODO :: Add tags list
-    ui->text->setText(note->getText());
+    // Parsing text
+    QString text = note->getText();
+    for (int i = 0; i < text.size(); i++)
+        if (text[i] == "\n") {
+            text = text.left(i);
+            break;
+        }
+    QFontMetrics metrics(ui->text->font());
+    QString shortenedText = metrics.elidedText(text, Qt::ElideRight, ui->text->width());
+    ui->text->setText(shortenedText);
+
     ui->editedTime->setText(note->getEditedTime().toString(Qt::TextDate));
+    ui->tags->setText(note->getTagsInString());
 }
 
 int SingleNoteView::getID() {

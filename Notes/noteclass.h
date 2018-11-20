@@ -33,6 +33,8 @@ public:
     bool removeTag(QString tag);
     void clearTags();
 
+    QString getTagsInString() const;
+
 private:
     int ID;
     QString text;
