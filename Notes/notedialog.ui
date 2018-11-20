@@ -127,6 +127,9 @@
    <property name="text">
     <string>Add Tag</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+T</string>
+   </property>
   </widget>
   <widget class="QPushButton" name="buttonRemoveTag">
    <property name="geometry">
@@ -139,6 +142,9 @@
    </property>
    <property name="text">
     <string>Remove tag</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+T</string>
    </property>
   </widget>
   <widget class="QPushButton" name="buttonSave">
@@ -153,6 +159,9 @@
    <property name="text">
     <string>SAVE</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
   </widget>
   <widget class="QPushButton" name="buttonDeleteNote">
    <property name="geometry">
@@ -165,6 +174,9 @@
    </property>
    <property name="text">
     <string>Delete Note</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Del</string>
    </property>
   </widget>
   <widget class="QTextEdit" name="text">

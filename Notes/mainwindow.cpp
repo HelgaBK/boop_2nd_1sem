@@ -40,3 +40,19 @@ void MainWindow::addNote() {
 void MainWindow::addTag() {
 
 }
+
+void MainWindow::updateView() {
+
+}
+
+void MainWindow::updateList() {
+
+}
+
+void MainWindow::readJSON(QString file) {
+
+}
+
+void MainWindow::writeJSON(QString file) {
+
+}

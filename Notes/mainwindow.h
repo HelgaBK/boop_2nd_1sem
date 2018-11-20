@@ -39,6 +39,14 @@ private:
     // Other methods
     void addNote();
     void addTag();
+
+    // Methods to work with interface
+    void updateView();
+    void updateList();
+
+    // Methods to work with JSON
+    void readJSON(QString file);
+    void writeJSON(QString file);
 };
 
 #endif // MAINWINDOW_H
