@@ -5,11 +5,10 @@
 #include <QMainWindow>
 
 namespace Ui {
-class MainWindow;
+    class MainWindow;
 }
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
     Q_OBJECT
 
 public:
@@ -26,6 +25,21 @@ private slots:
     void on_actionNewTag_triggered();
     void on_actionOpenArchive_triggered();
 
+    // Right-click menus
+    void showTagsMenu(const QPoint &pos);
+    void showNotesMenu(const QPoint &pos);
+
+    // Actions for tags
+    void addTag();
+    void editTag();
+    void removeTag();
+
+    // Actions for notes
+    void addNote();
+    void editNote();
+    void removeNote();
+    void archiveNote();
+
 private:
     Ui::MainWindow *ui;
 
@@ -35,10 +49,6 @@ private:
     QStringList tags;
     QStringList tagsFilter;
     int MaxID;
-
-    // Other methods
-    void addNote();
-    void addTag();
 
     // Methods to work with interface
     void updateView();

@@ -4,6 +4,7 @@
 #include <QFile>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QMenu>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -13,15 +14,24 @@ MainWindow::MainWindow(QWidget *parent) :
     if (!readJSON(JSON_SAVE)) {
         this->MaxID = 0;
     }
-    // TODO :: Add right clicks for both lists
-    // TODO :: Add double-click actions for both lists
+    // Right clicks for both lists
 
+    ui->listTags->setContextMenuPolicy(Qt::CustomContextMenu);
+        connect(ui->listTags, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showTagsMenu(QPoint)));
+    ui->listNotes->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->listNotes, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showNotesMenu(QPoint)));
+    // Double-click actions for both lists
+    connect(ui->listTags, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(editTag()));
+    connect(ui->listNotes, SIGNAL(itemDoubleClicked(QListWidgetItem*)), this, SLOT(editNote()));
+
+    // Add standard tags [can't be removed]
     ui->listTags->addItem("uncategorized");
     ui->listTags->addItem("university");
     ui->listTags->addItem("personal");
     this->tags.push_back("university");
     this->tags.push_back("personal");
 
+    // Disable right-click for MainToolBar
     ui->mainToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
 
     updateView();
@@ -52,12 +62,54 @@ void MainWindow::on_actionOpenArchive_triggered() {
     // TODO :: Write function
 }
 
-void MainWindow::addNote() {
-    // TODO :: Write function
+void MainWindow::showTagsMenu(const QPoint &pos) {
+    QPoint globalPos = ui->listTags->mapToGlobal(pos);
+    QMenu myMenu;
+    myMenu.addAction("New tag", this, SLOT(addTagItem()));
+    myMenu.addAction("Edit tag", this, SLOT(editTagItem()));
+    if (!this->tagsFilter.contains(ui->listTags->selectedItems()[0]->text()))
+        myMenu.addAction("Add to filter", this, SLOT(addTagToFilter()));
+    else
+        myMenu.addAction("Remove from filter", this, SLOT(removeTagFromFilter()));
+    myMenu.addAction("Delete tag",  this, SLOT(deleteTagItem()));
+    myMenu.exec(globalPos);
+}
+
+void MainWindow::showNotesMenu(const QPoint &pos) {
+    QPoint globalPos = ui->listNotes->mapToGlobal(pos);
+    QMenu myMenu;
+    myMenu.addAction("Edit Note", this, SLOT(editNote()));
+    myMenu.addAction("Move to archive", this, SLOT(moveToArchive()));
+    myMenu.addAction("Delete Note",  this, SLOT(deleteNote()));
+    myMenu.exec(globalPos);
 }
 
 void MainWindow::addTag() {
     // TODO :: Write function
+}
+
+void MainWindow::editTag() {
+
+}
+
+void MainWindow::removeTag() {
+
+}
+
+void MainWindow::addNote() {
+    // TODO :: Write function
+}
+
+void MainWindow::editNote() {
+
+}
+
+void MainWindow::removeNote() {
+
+}
+
+void MainWindow::archiveNote() {
+
 }
 
 void MainWindow::updateView() {
