@@ -86,7 +86,7 @@ void ArchiveDialog::update() {
         QListWidgetItem *listWidgetItem = new QListWidgetItem(ui->listNotes);
         ui->listNotes->addItem(listWidgetItem);
         SingleNoteView *singleNoteView = new SingleNoteView();
-        singleNoteView->setStyleSheet("singleNoteView {border-bottom: 1px solid #212121}");
+        singleNoteView->setStyleSheet("SingleNoteView {border-bottom: 1px solid #212121}");
         singleNoteView->setNote(this->notes[i]);
         listWidgetItem->setSizeHint(QSize(singleNoteView->sizeHint().width(), 85));
         ui->listNotes->setItemWidget(listWidgetItem, singleNoteView);

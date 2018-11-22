@@ -248,6 +248,7 @@ void MainWindow::removeTagFromFilter() {
         else
             AdditionalClass::errorMessage("There is no " + ui->listTags->selectedItems()[i]->text() + " tag");
     }
+    updateView();
 }
 
 void MainWindow::addNote() {
@@ -409,7 +410,7 @@ void MainWindow::updateList() {
         QListWidgetItem *listWidgetItem = new QListWidgetItem(ui->listNotes);
         ui->listNotes->addItem(listWidgetItem);
         SingleNoteView *singleNoteView = new SingleNoteView;
-        singleNoteView->setStyleSheet("singleNoteView {border-bottom: 1px solid #BDBDBD}");
+        singleNoteView->setStyleSheet("SingleNoteView {border-bottom: 1px solid #BDBDBD}");
         singleNoteView->setNote(this->notes[i]);
         listWidgetItem->setSizeHint(QSize(singleNoteView->sizeHint().width(), 85));
         ui->listNotes->setItemWidget(listWidgetItem, singleNoteView);
