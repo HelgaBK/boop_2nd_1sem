@@ -16,10 +16,6 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
-    if (!readJSON(JSON_SAVE)) {
-        this->MaxID = 0;
-    }
-
     // Right clicks for both lists
     ui->listTags->setContextMenuPolicy(Qt::CustomContextMenu);
         connect(ui->listTags, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showTagsMenu(QPoint)));
@@ -38,6 +34,10 @@ MainWindow::MainWindow(QWidget *parent) :
 
     // Disable right-click for MainToolBar
     ui->mainToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
+
+    if (!readJSON(JSON_SAVE)) {
+        this->MaxID = 0;
+    }
 
     updateView();
 }

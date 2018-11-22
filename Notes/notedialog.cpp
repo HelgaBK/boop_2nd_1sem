@@ -43,6 +43,7 @@ void NoteDialog::on_buttonAddTag_clicked() {
 
 void NoteDialog::on_buttonDeleteNote_clicked() {
     // In mainwindow all empty notes will be deleted
+    ui->text->setText("");
     this->note->setText("");
     this->close();
 }
