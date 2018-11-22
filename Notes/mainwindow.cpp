@@ -411,8 +411,8 @@ void MainWindow::updateList() {
         ui->listNotes->addItem(listWidgetItem);
         SingleNoteView *singleNoteView = new SingleNoteView;
         singleNoteView->setStyleSheet("SingleNoteView {border-bottom: 1px solid #BDBDBD}");
-        singleNoteView->setNote(this->notes[i]);
-        listWidgetItem->setSizeHint(QSize(singleNoteView->sizeHint().width(), 85));
+        singleNoteView->setNote(selectedNotes[i]);
+        listWidgetItem->setSizeHint(QSize(singleNoteView->sizeHint().width(), 75));
         ui->listNotes->setItemWidget(listWidgetItem, singleNoteView);
     }
 }
