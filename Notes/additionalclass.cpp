@@ -16,7 +16,7 @@ bool AdditionalClass::checkIfOk(QString message, QString title) {
     msgBox.setText(message);
     msgBox.setStandardButtons(QMessageBox::Yes);
     msgBox.addButton(QMessageBox::No);
-    msgBox.setDefaultButton(QMessageBox::No);
+    msgBox.setDefaultButton(QMessageBox::Yes);
     if (msgBox.exec() == QMessageBox::Yes)
         return true;
     else
