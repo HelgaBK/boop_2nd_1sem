@@ -32,6 +32,14 @@ error_handler(HPDF_STATUS   error_no,
 	longjmp(env, 1);
 }
 
+const char *font_list[] = {
+	"Times-Roman",
+	"Times-Italic",
+	NULL
+};
+
+char const *encoding = { "ISO8859-5" };
+
 struct Zamitka {
 	string text;
 	vector<string> tags;
@@ -61,9 +69,93 @@ public:
 		this->tags = tagsJson.get<vector<string>>();
 	}
 
+	bool writePDF(string filepath = "archive.pdf", string owner = "", string user = "") {
+		const char *notes = "Notes";
+		const char *archivedNotes = "Archived Notes";
+		const char *tagsText = "Tags";
+		HPDF_Doc  pdf;
+		char fname[256];
+		strcpy(fname, filepath.c_str());
+		HPDF_Page page;
+		HPDF_Font def_font;
+		HPDF_REAL tw;
+		HPDF_REAL height;
+		HPDF_REAL width;
+
+		pdf = HPDF_New(error_handler, NULL);
+		HPDF_UseUTFEncodings(pdf);
+		HPDF_SetCurrentEncoder(pdf, "UTF-8");
+		if (!pdf) {
+			printf("error: cannot create PdfDoc object\n");
+			return 1;
+		}
+
+		if (setjmp(env)) {
+			HPDF_Free(pdf);
+			return 1;
+		}
+
+		/* Add a new page object. */
+		page = HPDF_AddPage(pdf);
+
+		height = HPDF_Page_GetHeight(page);
+		width = HPDF_Page_GetWidth(page);
+
+		// Notes text
+		def_font = HPDF_GetFont(pdf, font_list[0], encoding);
+		HPDF_Page_SetFontAndSize(page, def_font, 24);
+
+		tw = HPDF_Page_TextWidth(page, notes);
+		HPDF_Page_BeginText(page);
+		HPDF_Page_TextOut(page, (width - tw) / 2, height - 50, notes);
+
+		// Write zaitkas
+		HPDF_Page_MoveTextPos(page, -((width - tw) / 2) + 60, -20);
+		for (int i = 0; i < this->zamitkas.size(); i++)
+			writeNote(this->zamitkas[i], pdf, page, def_font);
+
+		// Archved notes text
+		HPDF_Page_SetFontAndSize(page, def_font, 24);
+
+		tw = HPDF_Page_TextWidth(page, archivedNotes);
+		HPDF_Page_MoveTextPos(page, 60, -30);
+		HPDF_Page_TextOut(page, (width - tw) / 2, HPDF_Page_GetCurrentTextPos(page).y, archivedNotes);
+
+		// Write archived zamitkas
+		HPDF_Page_MoveTextPos(page, -((width - tw) / 2) + 60, -20);
+		for (int i = 0; i < this->archivedZamitkas.size(); i++)
+			writeNote(this->archivedZamitkas[i], pdf, page, def_font);
+
+		// Tags text
+		HPDF_Page_SetFontAndSize(page, def_font, 24);
+
+		tw = HPDF_Page_TextWidth(page, tagsText);
+		HPDF_Page_MoveTextPos(page, 60, -30);
+		HPDF_Page_TextOut(page, (width - tw) / 2, HPDF_Page_GetCurrentTextPos(page).y, tagsText);
+
+		//	Write tags
+		HPDF_Page_MoveTextPos(page, -((width - tw) / 2) + 60, -20);
+		HPDF_Font regularFont = HPDF_GetFont(pdf, font_list[0], encoding);
+		HPDF_Font italicFont = HPDF_GetFont(pdf, font_list[1], encoding);
+		HPDF_Page_SetFontAndSize(page, regularFont, 14);
+		for (int i = 0; i < this->tags.size(); i++)
+			pushText(this->tags[i], pdf, page, -15, 57, regularFont, 14);
+		HPDF_Page_EndText(page);
+
+		// Set passwords
+		if (user != "" && owner != "")
+			HPDF_SetPassword(pdf, castStringToChar(owner), castStringToChar(user));
+
+		HPDF_SaveToFile(pdf, fname);
+
+		/*	CLEAN  */
+		HPDF_Free(pdf);
+		return true;
+	}
+
 	void writeNote(Zamitka* const zamitka, HPDF_Doc& pdf, HPDF_Page& page, HPDF_Font& def_font) {
-		HPDF_Font regularFont = HPDF_GetFont(pdf, font_list[0], NULL);
-		HPDF_Font italicFont = HPDF_GetFont(pdf, font_list[1], NULL);
+		HPDF_Font regularFont = HPDF_GetFont(pdf, font_list[0], encoding);
+		HPDF_Font italicFont = HPDF_GetFont(pdf, font_list[1], encoding);
 
 		//text
 		HPDF_Page_SetFontAndSize(page, regularFont, 14);
@@ -134,26 +226,11 @@ private:
 	vector<string> tags;
 };
 
-const char *font_list[] = {
-	"Courier",
-	"Courier-Bold",
-	"Courier-Oblique",
-	"Courier-BoldOblique",
-	"Helvetica",
-	"Helvetica-Bold",
-	"Helvetica-Oblique",
-	"Helvetica-BoldOblique",
-	"Times-Roman",
-	"Times-Bold",
-	"Times-Italic",
-	"Times-BoldItalic",
-	"Symbol",
-	"ZapfDingbats",
-	NULL
-};
-
 int main(int argc, char **argv) {
 
-
+	YaRobliyPDF yrp;
+	yrp.readJSON("data.json");
+	yrp.writePDF();
+	system("pause");
 	return 0;
 }
