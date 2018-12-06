@@ -6,16 +6,3 @@ build-Notes-Desktop_Qt_5_11_2_MSVC2017_64bit-Debug/
 *.TMP
 
 build-Notes-Desktop_Qt_5_11_2_MinGW_32bit-Debug/
-
-PDFcreator/PDFcreator/json\.hpp
-
-PDFcreator/PDFcreator/data\.json
-
-PDFcreator/PDFcreator/file\.pdf
-
-PDFcreator/PDFcreator/Debug
-
-PDFcreator/Debug
-
-PDFcreator/\.vs/PDFcreator
-PDFcreator/.vs/PDFcreator/v15/Browse.VC.db
