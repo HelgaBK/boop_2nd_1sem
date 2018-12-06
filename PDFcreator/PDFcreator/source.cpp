@@ -61,7 +61,54 @@ public:
 		this->tags = tagsJson.get<vector<string>>();
 	}
 
+	void writeNote(Zamitka* const zamitka, HPDF_Doc& pdf, HPDF_Page& page, HPDF_Font& def_font) {
+		HPDF_Font regularFont = HPDF_GetFont(pdf, font_list[0], NULL);
+		HPDF_Font italicFont = HPDF_GetFont(pdf, font_list[1], NULL);
+
+		//text
+		HPDF_Page_SetFontAndSize(page, regularFont, 14);
+		pushText(zamitka->text, pdf, page, -15, 57, regularFont, 14);
+
+		HPDF_Page_SetFontAndSize(page, italicFont, 10);
+		//tags
+		string tags = "Tags : ";
+		for (int i = 0; i < zamitka->tags.size() - 1; i++)
+			tags += zamitka->tags[i] + "; ";
+		tags += zamitka->tags[zamitka->tags.size() - 1];
+		pushText(tags, pdf, page, -11, 80, italicFont, 10);
+
+		//time
+		string time = "Last edited time : " + zamitka->time;
+		pushText(time, pdf, page, -11, 80, italicFont, 10);
+
+		string divider = "_";
+		for (int i = 0; i < 80; i++)
+			divider += '_';
+		pushText(divider, pdf, page, -11, 80, italicFont, 10);
+
+		HPDF_Page_MoveTextPos(page, 0, -20);
+	}
+
 private:
+
+	void pushText(string const & text, HPDF_Doc& pdf, HPDF_Page& page,
+		int const shift, int const maxLength, HPDF_Font font, int fontSize) {
+		int strLen = text.size(), charStringSize = 0;
+		string charString;
+		for (int i = 0; i < strLen; i++) {
+			if ((text[i] == '\n') || (charString.size() >= maxLength)) {
+				HPDF_Page_ShowText(page, castStringToChar(charString));
+				HPDF_Page_MoveTextPos(page, 0, shift);
+				charString = "";
+			}
+			else
+				charString += text[i];
+		}
+		if (charString.size() > 0) {
+			HPDF_Page_ShowText(page, castStringToChar(charString));
+			HPDF_Page_MoveTextPos(page, 0, shift);
+		}
+	}
 
 	void readSingleZamitka(vector<Zamitka*> & zamitky, json singleJson) {
 		vector<json> zamitkasList;
@@ -73,6 +120,13 @@ private:
 				zamitkasList[i]["time"].get<string>());
 			zamitky.push_back(sn);
 		}
+	}
+
+	char* const castStringToChar(string toConvert) {
+		char *arr;
+		arr = new char[toConvert.size()];
+		strcpy(arr, toConvert.c_str());
+		return arr;
 	}
 
 	vector<Zamitka *> zamitkas;
