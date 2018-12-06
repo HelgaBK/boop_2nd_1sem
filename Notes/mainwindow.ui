@@ -173,6 +173,7 @@
    <addaction name="actionNewNote"/>
    <addaction name="actionNewTag"/>
    <addaction name="actionOpenArchive"/>
+   <addaction name="actionExport"/>
   </widget>
   <action name="actionNewNote">
    <property name="text">
@@ -196,6 +197,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionExport">
+   <property name="text">
+    <string>Export</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+E</string>
    </property>
   </action>
  </widget>
