@@ -183,6 +183,25 @@ public:
 
 private:
 
+	HPDF_Page checkForNewPage(HPDF_Doc& pdf, HPDF_Page& page, int height, HPDF_Font font, int fontSize) const {
+		HPDF_Point pointerPosition = HPDF_Page_GetCurrentTextPos(page);
+		HPDF_Page newPage;
+		if (pointerPosition.y < (fontSize + height) * 3) {
+			newPage = HPDF_AddPage(pdf);
+			HPDF_Page_SetFontAndSize(newPage, font, fontSize);
+			HPDF_Page_EndText(page);
+			HPDF_Page_BeginText(newPage);
+			HPDF_REAL pageHeight;
+			HPDF_REAL pageWidth;
+			HPDF_Point pointerPositionOnSecondPage = HPDF_Page_GetCurrentTextPos(newPage);
+			pageHeight = HPDF_Page_GetHeight(newPage);
+			pageWidth = HPDF_Page_GetWidth(newPage);
+			HPDF_Page_MoveTextPos(newPage, 60, pageHeight - height);
+			return newPage;
+		}
+		return page;
+	}
+
 	void pushText(string const & text, HPDF_Doc& pdf, HPDF_Page& page,
 		int const shift, int const maxLength, HPDF_Font font, int fontSize) {
 		int strLen = text.size(), charStringSize = 0;
@@ -190,6 +209,7 @@ private:
 		for (int i = 0; i < strLen; i++) {
 			if ((text[i] == '\n') || (charString.size() >= maxLength)) {
 				HPDF_Page_ShowText(page, castStringToChar(charString));
+				page = checkForNewPage(pdf, page, (-shift) + 1, font, fontSize);
 				HPDF_Page_MoveTextPos(page, 0, shift);
 				charString = "";
 			}
@@ -198,6 +218,7 @@ private:
 		}
 		if (charString.size() > 0) {
 			HPDF_Page_ShowText(page, castStringToChar(charString));
+			page = checkForNewPage(pdf, page, (-shift) + 1, font, fontSize);
 			HPDF_Page_MoveTextPos(page, 0, shift);
 		}
 	}
@@ -227,10 +248,14 @@ private:
 };
 
 int main(int argc, char **argv) {
-
 	YaRobliyPDF yrp;
 	yrp.readJSON("data.json");
-	yrp.writePDF();
-	system("pause");
+
+	if (argc == 2)
+		yrp.writePDF(argv[1]);
+	else if (argc == 4) {
+		yrp.writePDF(argv[1], argv[2], argv[3]);
+	}
+	else return 1;
 	return 0;
 }
