@@ -24,3 +24,4 @@ bool AdditionalClass::checkIfOk(QString message, QString title) {
     else
         return false;
 }
+
