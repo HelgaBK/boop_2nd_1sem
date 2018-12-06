@@ -2,6 +2,7 @@
 #include "archivedialog.h"
 #include "mainwindow.h"
 #include "notedialog.h"
+#include "pdfexport.h"
 #include "singlenoteview.h"
 #include "ui_mainwindow.h"
 
@@ -16,7 +17,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
-    // Right clicks for both lists
+    // Right clicks for both lists!
     ui->listTags->setContextMenuPolicy(Qt::CustomContextMenu);
         connect(ui->listTags, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showTagsMenu(QPoint)));
     ui->listNotes->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -89,6 +90,13 @@ void MainWindow::on_actionOpenArchive_triggered() {
                 }
             }
     updateView();
+}
+
+void MainWindow::on_actionExport_triggered()
+{
+    this->writeJSON(JSON_SAVE);
+    PDFexport *pdfexport = new PDFexport(this);
+    pdfexport->exec();
 }
 
 void MainWindow::showTagsMenu(const QPoint &pos) {

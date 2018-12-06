@@ -31,7 +31,8 @@ SOURCES += \
     singlenoteview.cpp \
     notedialog.cpp \
     additionalclass.cpp \
-    archivedialog.cpp
+    archivedialog.cpp \
+    pdfexport.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -39,13 +40,21 @@ HEADERS += \
     singlenoteview.h \
     notedialog.h \
     additionalclass.h \
-    archivedialog.h
+    archivedialog.h \
+    pdfexport.h
 
 FORMS += \
         mainwindow.ui \
     singlenoteview.ui \
     notedialog.ui \
-    archivedialog.ui
+    archivedialog.ui \
+    pdfexport.ui
+
+copy_exe.path = $$OUT_PWD/included
+copy_exe.files = included/*
+
+INSTALLS += \
+    copy_exe
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

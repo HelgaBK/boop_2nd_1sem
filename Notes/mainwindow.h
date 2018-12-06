@@ -24,6 +24,7 @@ private slots:
     void on_actionNewNote_triggered();
     void on_actionNewTag_triggered();
     void on_actionOpenArchive_triggered();
+    void on_actionExport_triggered();
 
     // Right-click menus
     void showTagsMenu(const QPoint &pos);

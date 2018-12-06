@@ -6,8 +6,10 @@
 AdditionalClass::AdditionalClass() {}
 
 void AdditionalClass::errorMessage(QString message) {
-    QErrorMessage *em = new QErrorMessage();
-    em->showMessage(message);
+    QMessageBox messageBox;
+    messageBox.setText(message);
+    messageBox.setIcon(QMessageBox::Warning);
+    messageBox.exec();
 }
 
 bool AdditionalClass::checkIfOk(QString message, QString title) {
