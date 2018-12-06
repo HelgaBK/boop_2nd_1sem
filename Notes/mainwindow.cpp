@@ -16,7 +16,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow) {
     ui->setupUi(this);
 
-    // Right clicks for both lists
+    // Right clicks for both lists!
     ui->listTags->setContextMenuPolicy(Qt::CustomContextMenu);
         connect(ui->listTags, SIGNAL(customContextMenuRequested(QPoint)), this, SLOT(showTagsMenu(QPoint)));
     ui->listNotes->setContextMenuPolicy(Qt::CustomContextMenu);
